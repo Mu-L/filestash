@@ -26,16 +26,7 @@ RUN apt-get update > /dev/null && \
     mkdir -p ./dist/data/state/config/ && \
     cp config/config.json ./dist/data/state/config/config.json
 
-# STEP4: BUILD PLUGINS
-FROM emscripten/emsdk AS builder_final
-WORKDIR /home/filestash/
-COPY --from=builder_backend /home/filestash/ .
-RUN mkdir -p /home/filestash/dist/data/state/plugins && \
-    cd /home/filestash/server/plugin/plg_application_dev/ && make && \
-    cd /home/filestash/server/plugin/plg_application_3d/ && make && \
-    cd /home/filestash/server/plugin/plg_application_map/ && make
-
-# STEP5: BUILD PROD IMAGE
+# STEP4: BUILD PROD IMAGE
 FROM debian:stable-slim
 MAINTAINER mickael@kerjean.me
 WORKDIR /app/
